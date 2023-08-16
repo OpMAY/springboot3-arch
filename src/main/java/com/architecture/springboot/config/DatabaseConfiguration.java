@@ -47,7 +47,7 @@ public class DatabaseConfiguration {
      * JPA SETTINGS
      */
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManager() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(dataSource());
         entityManagerFactory.setPersistenceUnitName("jpa-mysql");
@@ -61,6 +61,7 @@ public class DatabaseConfiguration {
      */
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
+        log.info("sqlSessionFactory init");
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setMapperLocations(applicationContext.getResources("classpath:sqls/*.xml"));
@@ -87,7 +88,7 @@ public class DatabaseConfiguration {
 
         // JPA Transactional
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManager().getObject());
+        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 
         return new ChainedTransactionManager(jpaTransactionManager, mybatisDataSourceTransactionManager);
     }
