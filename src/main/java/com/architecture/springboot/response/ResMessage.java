@@ -1,15 +1,21 @@
 package com.architecture.springboot.response;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * REST API Response에 담을 JSON 객체 생성기
+ * **/
 @Data
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @Log4j2
@@ -25,25 +31,18 @@ public class ResMessage {
         return this;
     }
 
-    public <T> boolean pop(String key) {
-        Set set = map.keySet();
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()) {
-            boolean check = ((String) iterator.next()).equals(key) ? true : false;
-            if (check) {
-                map.remove(key);
-                return true;
-            }
-            continue;
+    public boolean pop(String key) {
+        if(map.containsKey(key)) {
+            map.remove(key);
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     public Map<String, Object> getHashMap(boolean isLog) throws JSONException {
-        if (isLog == true) {
-            Iterator<String> keys = map.keySet().iterator();
-            while (keys.hasNext()) {
-                String key = keys.next();
+        if (isLog) {
+            for (String key : map.keySet()) {
                 String value = map.get(key).toString();
                 log.info("Message Map Value -> {},{}", key, value);
             }
