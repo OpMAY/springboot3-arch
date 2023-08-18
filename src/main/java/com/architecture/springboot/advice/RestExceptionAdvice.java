@@ -27,4 +27,11 @@ public class RestExceptionAdvice extends ResponseEntityExceptionHandler {
         log.error("File Size Limit Over : {}", e.getLocalizedMessage());
         return ApiResponse.fail(new ResponseError("F01", "업로드 한 파일 용량이 너무 큽니다. - " + e.getMessage()));
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ApiResponse<ResMessage> handleDefaultException(Exception e) {
+        log.error(e.getStackTrace());
+        return ApiResponse.error(new ResponseError("500", "서버 내부 오류"));
+    }
 }

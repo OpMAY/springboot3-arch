@@ -14,6 +14,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class SampleController {
     private final SampleService sampleService;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView home() {
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/test/error", method = RequestMethod.GET)
+    public ModelAndView errorTest() throws Exception {
+        throw new Exception();
+    }
+
     @RequestMapping(value = "/test/file", method = RequestMethod.GET)
     public ModelAndView fileTest() {
         return new ModelAndView("test/file");
