@@ -34,9 +34,10 @@ public class FileConfiguration implements WebMvcConfigurer {
         try {
             String enMaxUploadSize = environment.getProperty("file.maxUploadSize");
             String enMaxUploadSizePerFile = environment.getProperty("file.maxUploadSizePerFile");
+            log.info("enm : {}, enmp : {}", enMaxUploadSize, enMaxUploadSizePerFile);
             if(enMaxUploadSize != null && enMaxUploadSizePerFile != null) {
-                maxUploadSize = Long.getLong(enMaxUploadSize);
-                maxUploadSizePerFile = Long.getLong(enMaxUploadSizePerFile);
+                maxUploadSize = Long.parseLong(enMaxUploadSize);
+                maxUploadSizePerFile = Long.parseLong(enMaxUploadSizePerFile);
             }
             MultipartConfigFactory factory = new MultipartConfigFactory();
             factory.setMaxRequestSize(DataSize.ofBytes(maxUploadSize));

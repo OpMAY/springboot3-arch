@@ -132,6 +132,20 @@
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
         </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3-transfer-manager</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>software.amazon.awssdk.crt</groupId>
+            <artifactId>aws-crt</artifactId>
+            <version>0.23.2</version>
+        </dependency>
+        <!-- 내장 톰캣 사용 시 jsp 매핑 -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
     </dependencies>
     <!-- AWS Management -> bom을 등록해 maven에 등록 될 aws maven 들의 버전 관리를 한번에 지정 (충돌 자동 방지) / 2버젼 등록 일자 20230817 -->
     <dependencyManagement>

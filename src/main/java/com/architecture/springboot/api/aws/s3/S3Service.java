@@ -1,5 +1,6 @@
 package com.architecture.springboot.api.aws.s3;
 
+import com.architecture.springboot.util.Time;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,10 +13,18 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.transfer.s3.S3TransferManager;
+import software.amazon.awssdk.transfer.s3.model.CompletedFileUpload;
+import software.amazon.awssdk.transfer.s3.model.FileUpload;
+import software.amazon.awssdk.transfer.s3.model.UploadFileRequest;
+import software.amazon.awssdk.transfer.s3.progress.LoggingTransferListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,26 +56,31 @@ public class S3Service {
     }
 
     /**
-     * @param file (MultipartFile)
+     * @param file          (MultipartFile)
      * @param fileFolderURL (String)
      * @return String
      * <p>putObject - AWS S3 버킷에 파일 업로드</p>
-     * **/
+     **/
     public String putObject(MultipartFile file, String fileFolderURL) {
         try {
+            log.info("put Object file : {}, url : {}", file, fileFolderURL);
+            log.info("before upload : {}", Time.TimeFormatHMS());
             String fileName = UUID.randomUUID() + file.getOriginalFilename();
             String contentType = file.getContentType();
 
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(serverFilePath + fileName)
+                    .key(fileFolderURL + fileName)
                     .contentType(contentType)
                     .contentLength(file.getSize())
                     .build();
             PutObjectResponse response = s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
+            log.info("putObjectResponse : {}", response.sdkHttpResponse());
             if (response.sdkHttpResponse().statusText().orElse("FAIL").equals("OK")) {
+                log.info("after upload : {}", Time.TimeFormatHMS());
                 return getFileUrl(fileFolderURL, fileName);
             }
+
         } catch (IOException ie) {
             log.error("파일을 읽어들이는데 에러가 발생했습니다.");
             log.error(ie.getMessage());
@@ -83,11 +97,12 @@ public class S3Service {
         return null;
     }
 
+
     /**
      * @param fileURL (String)
      * @return File
      * <p>getObject - AWS S3 버킷에 있는 파일 다운로드</p>
-     * **/
+     **/
     public File getObject(String fileURL) {
         String path = getFilePathURL(fileURL);
         try {
@@ -117,7 +132,7 @@ public class S3Service {
      * @param filePath (String)
      * @return boolean
      * <p>deleteObject - AWS S3 버킷에 있는 파일 삭제</p>
-     * **/
+     **/
     public boolean deleteObject(String filePath) {
         try {
             List<ObjectIdentifier> bucketObjects = List.of(ObjectIdentifier.builder().key(filePath).build());
@@ -140,11 +155,11 @@ public class S3Service {
      * @param filePaths (List<String>)
      * @return boolean
      * <p>deleteObjects - AWS S3 버킷에 있는 파일들 삭제</p>
-     * **/
+     **/
     public boolean deleteObjects(List<String> filePaths) {
         try {
             List<ObjectIdentifier> bucketObjects = new ArrayList<>();
-            for(String s : filePaths) {
+            for (String s : filePaths) {
                 bucketObjects.add(ObjectIdentifier.builder().key(s).build());
             }
             Delete del = Delete.builder()
@@ -164,11 +179,11 @@ public class S3Service {
 
 
     private String getBucketUrl() {
-        return "https://" + bucketName + "." + DEFAULT_REGION + ".amazonaws.com";
+        return "https://" + bucketName + ".s3." + DEFAULT_REGION + ".amazonaws.com/";
     }
 
     private String getFileUrl(String fileFolderURL, String fileName) {
-        return defaultURL + fileFolderURL + fileName;
+        return defaultURL + fileFolderURL + URLEncoder.encode(fileName, StandardCharsets.UTF_8);
     }
 
     private String getFilePathURL(String fullURL) {

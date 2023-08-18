@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class RestInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        log.info("REST request : {}", request.getRequestURL());
         return true;
     }
 

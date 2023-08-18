@@ -8,9 +8,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.transfer.s3.S3TransferManager;
+
+import static software.amazon.awssdk.transfer.s3.SizeConstant.MB;
 
 /**
  * @author : OpMAY
@@ -26,7 +31,7 @@ public class S3Configuration {
     private final Region DEFAULT_REGION = Region.AP_NORTHEAST_2;
 
     @Bean
-    public S3Client configure() {
+    public S3Client configureS3Client() {
         String accessKey = environment.getProperty("aws.accessKey");
         String secretKey = environment.getProperty("aws.secretKey");
         log.info("ACCESS_KEY : {}, SECRET_KEY : {}", accessKey, secretKey);
@@ -37,6 +42,4 @@ public class S3Configuration {
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build();
     }
-
-
 }

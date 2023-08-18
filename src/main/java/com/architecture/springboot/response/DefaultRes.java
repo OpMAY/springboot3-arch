@@ -4,26 +4,45 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @Builder
+@Deprecated
 public class DefaultRes<T> {
-    private int status;
     private T data;
+    private boolean success;
+    private List<ResponseError> errors;
 
-    public DefaultRes(final int status) {
-        this.status = status;
+    public DefaultRes(final boolean success) {
+        this.success = success;
         this.data = null;
     }
 
-    public static <T> DefaultRes<T> res(final int status) {
-        return res(status, null);
+    public static <T> DefaultRes<T> res(final boolean success) {
+        return res(success, null,null);
     }
 
-    public static <T> DefaultRes<T> res(final int status, final T object) {
+    public static <T> DefaultRes<T> res(final boolean success, final T object) {
         return DefaultRes.<T>builder()
                 .data(object)
-                .status(status)
+                .success(success)
+                .build();
+    }
+
+    public static <T> DefaultRes<T> res(final boolean success, final T object, final List<ResponseError> errors) {
+        return DefaultRes.<T>builder()
+                .data(object)
+                .success(success)
+                .errors(errors)
+                .build();
+    }
+
+    public static <T> DefaultRes<T> res(final boolean success, final List<ResponseError> errors) {
+        return DefaultRes.<T>builder()
+                .success(success)
+                .errors(errors)
                 .build();
     }
 }

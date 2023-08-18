@@ -19,15 +19,11 @@ public class WebConfiguration implements WebMvcConfigurer {
     private ArrayList<String> webInterceptorExcludedURLs;
 
     @PostConstruct
-    public void WebConfiguration() {
+    public void init() {
         restInterceptorExcludedURLs = new ArrayList<>();
         webInterceptorExcludedURLs = new ArrayList<>();
         restInterceptorExcludedURLs.add("/api/auth");
-        webInterceptorExcludedURLs.add("/api/**");
-        log.info("WebConfiguration Initialized");
-    }
-
-    public WebConfiguration() {
+//        webInterceptorExcludedURLs.add("/api/**");
         log.info("WebConfiguration Initialized");
     }
 
