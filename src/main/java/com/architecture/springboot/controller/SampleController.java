@@ -28,4 +28,10 @@ public class SampleController {
     public ModelAndView fileTest() {
         return new ModelAndView("test/file");
     }
+
+    @RequestMapping(value = "/test/db", method = RequestMethod.GET)
+    public ModelAndView dbTest() {
+        sampleService.dbTest();
+        return new ModelAndView("home");
+    }
 }

@@ -65,7 +65,8 @@ public class DatabaseConfiguration {
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setMapperLocations(applicationContext.getResources("classpath:sqls/*.xml"));
-        bean.setTypeAliasesPackage("com.architecture/springboot/model/dto");
+        bean.setTypeAliasesPackage("com/architecture/springboot/model/dto");
+        log.info("sqlSessionFactory initialized");
         return bean.getObject();
     }
 
@@ -74,6 +75,7 @@ public class DatabaseConfiguration {
      * **/
     @Bean
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) {
+        log.info("sqlSessionTemplate init");
         return new SqlSessionTemplate(sqlSessionFactory);
     }
 
@@ -83,13 +85,15 @@ public class DatabaseConfiguration {
     @Bean
     public PlatformTransactionManager transactionManager() {
         // MyBatis Transactional
+        log.info("Mybatis transactional init");
         DataSourceTransactionManager mybatisDataSourceTransactionManager = new DataSourceTransactionManager();
         mybatisDataSourceTransactionManager.setDataSource(dataSource());
-
+        log.info("Mybatis transactional initialized");
         // JPA Transactional
+        log.info("jpa transactional init");
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-
+        log.info("jpa transactional initialized");
         return new ChainedTransactionManager(jpaTransactionManager, mybatisDataSourceTransactionManager);
     }
 }

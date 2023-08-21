@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="info">
+<Configuration status="warn">
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %-5p: %c - %m%n"/>
@@ -10,62 +10,24 @@
             <AppenderRef ref="Console" />
         </Root>
         <!-- 3rdparty Loggers -->
-        <logger name="org.springframework">
-            <level value="info"/>
-        </logger>
-        <logger name="org.springframework.core">
-            <level value="info"/>
-        </logger>
-        <logger name="org.springframework.beans">
-            <level value="info"/>
-        </logger>
-        <logger name="org.springframework.context">
-            <level value="info"/>
-        </logger>
-        <logger name="org.springframework.web">
-            <level value="info"/>
-        </logger>
-        <logger name="com.mapper">
-            <level value="info"/>
-        </logger>
-        <logger name="org.mybatis.spring.SqlSessionUtils">
-            <level value="info"/>
-        </logger>
-        <logger name="org.springframework.jdbc">
-            <level value="info"/>
-        </logger>
-        <logger name="org.springframework.web.servlet.DispatcherServlet">
-            <level value="WARN"/>
-        </logger>
-        <logger name="org.springframework.web.servlet.view.InternalResourceView">
-            <level value="info"></level>
-        </logger>
-        <logger name="org.springframework.web.servlet.view.JstlView">
-            <level value="info"></level>
-        </logger>
-        <logger name="com.zaxxer.hikari.pool">
-            <level value="info"></level>
-        </logger>
-        <logger name="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor">
-            <level value="info"></level>
-        </logger>
-        <logger name="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-            <level value="info"></level>
-        </logger>
-        <logger name="org.springframework.data.elasticsearch">
-            <level value="info"></level>
-        </logger>
-        <logger name="org.springframework.jndi">
-            <level value="info"></level>
-        </logger>
-        <logger name="org.hibernate">
-            <level value="info"></level>
-        </logger>
-        <logger name="org.springframework.boot.autoconfigure.logging">
-            <level value="info"></level>
-        </logger>
-        <logger name="springfox.documentation">
-            <level value="info"></level>
-        </logger>
+        <Logger name="org.springframework" level="info"/>
+        <Logger name="org.springframework.core" level="info"/>
+        <Logger name="org.springframework.beans" level="info"/>
+        <Logger name="org.springframework.context" level="info"/>
+        <Logger name="org.springframework.web" level="info"/>
+        <Logger name="com.mapper" level="debug"/>
+        <Logger name="org.mybatis.spring.SqlSessionUtils" level="debug"/>
+        <Logger name="org.springframework.jdbc" level="info"/>
+        <Logger name="org.springframework.web.servlet.DispatcherServlet" level="info"/>
+        <Logger name="org.springframework.web.servlet.view.InternalResourceView" level="info"/>
+        <Logger name="org.springframework.web.servlet.view.JstlView" level="info"/>
+        <Logger name="com.zaxxer.hikari.pool" level="info"/>
+        <Logger name="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor" level="info"/>
+        <Logger name="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" level="info"/>
+        <Logger name="org.springframework.data.elasticsearch" level="info"/>
+        <Logger name="org.springframework.jndi" level="info"/>
+        <Logger name="org.hibernate" level="info"/>
+        <Logger name="org.springframework.boot.autoconfigure.logging" level="info"/>
+        <Logger name="springfox.documentation" level="info"/>
     </Loggers>
 </Configuration>

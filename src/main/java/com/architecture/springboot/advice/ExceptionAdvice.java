@@ -17,7 +17,10 @@ public class ExceptionAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     public ModelAndView handleDefaultException(Exception e) {
-        log.error(e.getMessage());
+        log.error(e);
+//        for(StackTraceElement traceElement : e.getStackTrace()) {
+//            log.error(traceElement);
+//        }
         return new ModelAndView("error/error");
     }
 }
