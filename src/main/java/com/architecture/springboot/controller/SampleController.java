@@ -1,6 +1,8 @@
 package com.architecture.springboot.controller;
 
 import com.architecture.springboot.service.SampleService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,13 @@ public class SampleController {
     @RequestMapping(value = "/test/db", method = RequestMethod.GET)
     public ModelAndView dbTest() {
         sampleService.dbTest();
+        return new ModelAndView("home");
+    }
+
+    @RequestMapping(value = "/test/logging", method = RequestMethod.GET)
+    public ModelAndView logTest(HttpServletRequest request, HttpServletResponse response) {
+        log.info("test request : {}", request.getRequestURL());
+        log.info("test response : {}", response);
         return new ModelAndView("home");
     }
 }
