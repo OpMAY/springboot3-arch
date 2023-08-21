@@ -4,10 +4,25 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{yy-MM-dd HH:mm:ss}] [%t] [%equals{%X{traceId}}{}{startup}] %-5p: %c - %m%n"/>
         </Console>
+        <!--   TODO AWS CLOUDWATCH LOGBACK 추후 설정   -->
+        <!--        <appender name="awsCloudWatch" class="ca.pjer.logback.AwsLogsAppender">-->
+        <!--            <layout>-->
+        <!--                <pattern>[%thread] [%date] [%level] [%file:%line] - %msg%n</pattern>-->
+        <!--            </layout>-->
+        <!--            <logGroupName>OpMAY-</logGroupName>-->
+        <!--            <logStreamUuidPrefix>OpMAY-</logStreamUuidPrefix>-->
+        <!--            <logRegion>ap-northeast-2</logRegion>-->
+        <!--            <maxBatchLogEvents>50</maxBatchLogEvents>-->
+        <!--            <maxFlushTimeMillis>30000</maxFlushTimeMillis>-->
+        <!--            <maxBlockTimeMillis>5000</maxBlockTimeMillis>-->
+        <!--            <retentionTimeDays>0</retentionTimeDays>-->
+        <!--            <accessKeyId>액세스키값</accessKeyId>-->
+        <!--            <secretAccessKey>시크릿키값</secretAccessKey>-->
+        <!--        </appender>-->
     </Appenders>
     <Loggers>
         <Root level="info">
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="Console"/>
         </Root>
         <!-- 3rdparty Loggers -->
         <Logger name="org.springframework" level="info"/>
