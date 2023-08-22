@@ -1,9 +1,12 @@
 package com.architecture.springboot.restcontroller;
 
+import com.architecture.springboot.interceptor.JWTExcepted;
+import com.architecture.springboot.interceptor.JWTRequired;
 import com.architecture.springboot.response.ApiResponse;
 import com.architecture.springboot.response.ResMessage;
 import com.architecture.springboot.response.ResponseError;
 import com.architecture.springboot.service.SampleService;
+import com.architecture.springboot.util.Security;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,8 +22,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@JWTRequired
 public class SampleRestController {
     private final SampleService sampleService;
+    private final Security security;
+
+    @JWTExcepted
+    @RequestMapping(value = "/auth", method = RequestMethod.GET)
+    public ApiResponse<ResMessage> auth(@RequestParam("key") String key) {
+        ResMessage resMessage = new ResMessage();
+        log.info("JWTExcepted Test key : {}", key);
+        String token = security.createToken(key);
+        if(key == null || token == null) {
+            return ApiResponse.fail(new ResponseError("Auth 01", "올바른 Access KEY가 아닙니다."));
+        } else {
+            resMessage.put("token", token);
+            return ApiResponse.success(resMessage);
+        }
+    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public ApiResponse<ResMessage> restTest(HttpServletRequest request) {

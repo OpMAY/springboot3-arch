@@ -1,8 +1,9 @@
 package com.architecture.springboot.config;
 
-import com.architecture.springboot.interceptor.RestInterceptor;
+import com.architecture.springboot.interceptor.AuthInterceptor;
 import com.architecture.springboot.interceptor.WebInterceptor;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,10 @@ import java.util.ArrayList;
 
 @Log4j2
 @Configuration
+@RequiredArgsConstructor
 public class WebConfiguration implements WebMvcConfigurer {
+    private final AuthInterceptor authInterceptor;
+    private final WebInterceptor webInterceptor;
     private ArrayList<String> restInterceptorExcludedURLs;
     private ArrayList<String> webInterceptorExcludedURLs;
 
@@ -27,17 +31,11 @@ public class WebConfiguration implements WebMvcConfigurer {
         log.info("WebConfiguration Initialized");
     }
 
-    @Autowired
-    private RestInterceptor restInterceptor;
-
-    @Autowired
-    private WebInterceptor webInterceptor;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(restInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns(restInterceptorExcludedURLs);
+        registry.addInterceptor(authInterceptor)
+                .addPathPatterns("**")
+                .order(1);
         registry.addInterceptor(webInterceptor)
                 .addPathPatterns("**")
                 .excludePathPatterns(webInterceptorExcludedURLs);

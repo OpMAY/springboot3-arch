@@ -7,18 +7,29 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 
 @Log4j2
+@Service
+@PropertySource("classpath:application.properties")
+@RequiredArgsConstructor
 public class Security {
-    private final String access_key;
+    private final Environment environment;
+    private String access_key;
 
-    public Security(String access_key) {
-        this.access_key = access_key;
+    @PostConstruct
+    public void initSecurity() {
+        access_key = environment.getProperty("server.settings.accesskey");
     }
 
     public String encryptionJWT() {
@@ -62,8 +73,11 @@ public class Security {
         return builder.toString();
     }
 
-    public String createToken() {
-        return encryptionJWT();
+    public String createToken(String access_key) {
+        if (Objects.equals(access_key, this.access_key)) {
+            return encryptionJWT();
+        }
+        return null;
     }
 
     public boolean validateToken(String token) {
