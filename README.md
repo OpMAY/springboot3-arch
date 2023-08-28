@@ -31,3 +31,16 @@
 - AWS 업로드 방식 테스트
 - Controller Advice 추가 (더 개선 필요)
 ```
+
+### version 1-3. 2023.08.19
+```
+- MyBatis, JPA 혼용 테스트
+- MyBatis TypeHandler 연동
+- AWS CloudWatch 기본 세팅
+- JWT Validation on Interceptor
+```
+
+### version 1-4. 2023.08.28
+```
+- Interceptor Setting / JWT 인증 방식 변경
+```
