@@ -6,6 +6,11 @@ import lombok.Data;
 
 import java.util.List;
 
+
+/**
+ * @Deprecated
+ * <p> ApiResponse.class 로 대체함 </p>
+ * **/
 @Data
 @AllArgsConstructor
 @Builder

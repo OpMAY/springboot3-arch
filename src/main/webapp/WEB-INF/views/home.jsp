@@ -9,10 +9,10 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <title>Hello, Home</title>
+    <title>SpringBoot 3</title>
 </head>
 <body>
-<h1>Hello, Home!</h1>
+<h1>SpringBoot 3 Deploy Test For AWS on VRAPi</h1>
 <img src="/images/sample_image.png"/>
 <!-- Optional JavaScript; choose one of the two! -->
 

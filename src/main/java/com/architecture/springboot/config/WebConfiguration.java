@@ -19,26 +19,31 @@ import java.util.ArrayList;
 public class WebConfiguration implements WebMvcConfigurer {
     private final AuthInterceptor authInterceptor;
     private final WebInterceptor webInterceptor;
-    private ArrayList<String> restInterceptorExcludedURLs;
+    private ArrayList<String> authInterceptorExcludedURLs;
     private ArrayList<String> webInterceptorExcludedURLs;
 
     @PostConstruct
     public void init() {
-        restInterceptorExcludedURLs = new ArrayList<>();
+        authInterceptorExcludedURLs = new ArrayList<>();
         webInterceptorExcludedURLs = new ArrayList<>();
-        restInterceptorExcludedURLs.add("/api/auth");
+        authInterceptorExcludedURLs.add("/api/auth");
 //        webInterceptorExcludedURLs.add("/api/**");
         log.info("WebConfiguration Initialized");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // DEFAULT INTERCEPTORS (API/WEB SETTINGS)
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("**")
+                .excludePathPatterns(authInterceptorExcludedURLs)
                 .order(1);
         registry.addInterceptor(webInterceptor)
                 .addPathPatterns("**")
-                .excludePathPatterns(webInterceptorExcludedURLs);
+                .excludePathPatterns(webInterceptorExcludedURLs)
+                .order(2);
+
+        // SERVICE BUSINESS LOGIC INTERCEPTORS
     }
 
     @Override
